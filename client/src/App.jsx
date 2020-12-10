@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
+import { Container } from 'react-bootstrap';
+import UrlForm from './components/url-form/UrlForm';
+import AwardsTable from './components/awards-table/AwardsTable';
+import AppContext from './Context';
 
+const initialState = {
+  awards: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'UPDATE':
+      return {
+        awards: action.data,
+      };
+
+    default:
+      return initialState;
+  }
+}
 function App() {
-  const [link, setLink] = useState('');
-  const [awards, setAwards] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleSubmit = async () => {
-    const body = { url: link };
-    const response = await fetch('/api/awards', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    const results = await response.json();
-    console.log(results);
-    setAwards(results);
-  };
-
-  const handleInputChange = (e) => {
-    setLink(e.target.value);
-  };
   return (
-    <div className="App">
-      <input type="text" placeholder="Paste reddit link here" value={link} onChange={handleInputChange} />
-      <button type="button" onClick={handleSubmit}>Submit</button>
-      <div>{awards.length}</div>
-    </div>
+    <Container className="App">
+      <AppContext.Provider value={{ state, dispatch }}>
+        <UrlForm />
+        <AwardsTable />
+      </AppContext.Provider>
+    </Container>
   );
 }
 
