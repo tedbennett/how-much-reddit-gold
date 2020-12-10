@@ -1,13 +1,12 @@
 const axios = require("axios").default;
 const express = require('express')
+const path = require('path')
 const app = express()
 app.use(express.json())
 const port = 3000
 
 
-app.get('/', (req, res) => {
-  res.send(index.html)
-})
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.post('/api/awards', (req, res) => {
   const body = req.body;
@@ -19,7 +18,7 @@ app.post('/api/awards', (req, res) => {
       throw 'Unable to read link'
     }
     const children = json[0].data.children
-    if (children.length > 0) {
+    if (children.length === 0) {
       throw 'Unable to read link'
     }
     const awards = children[0].data.all_awardings
