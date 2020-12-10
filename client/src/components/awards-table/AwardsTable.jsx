@@ -6,7 +6,7 @@ import AppContext from '../../Context';
 const AwardsTable = () => {
   const { state } = useContext(AppContext);
   if (!state.awards.length) {
-    return <div className="text-center" style={{ color: 'gray', margin: 30 }}>{state.message}</div>;
+    return <div className="text-center text-muted my-5">{state.message}</div>;
   }
   return (
     <Table bordered hover>
@@ -22,7 +22,7 @@ const AwardsTable = () => {
       </thead>
       <tbody>
         {state.awards.map((award) => (
-          <tr>
+          <tr key={award.name}>
             <td className="text-center">
               <img
                 src={award.image}

@@ -25,13 +25,19 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Container className="App">
-      <h1 className="text-center" style={{ marginTop: 50, marginBottom: 50 }}>How Much Gold?</h1>
-      <AppContext.Provider value={{ state, dispatch }}>
-        <UrlForm />
-        <AwardsTable />
-      </AppContext.Provider>
-    </Container>
+    <div>
+      <Container className="App">
+        <h1 className="text-center my-5">How Much Reddit Gold?</h1>
+        <AppContext.Provider value={{ state, dispatch }}>
+          <UrlForm />
+          <AwardsTable />
+        </AppContext.Provider>
+
+      </Container>
+      <div className="fixed-bottom text-center p-2">
+        <a href="https://www.github.com/tedbennett" className="text-muted">Made by Ted Bennett</a>
+      </div>
+    </div>
   );
 }
 

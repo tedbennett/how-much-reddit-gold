@@ -38,7 +38,7 @@ const UrlForm = () => {
   };
 
   return (
-    <Form className="text-center">
+    <Form className="text-center mb-3">
       <Form.Group controlId="formUrl">
         <Form.Control
           type="text"
@@ -48,10 +48,10 @@ const UrlForm = () => {
           onChange={(e) => setLink(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" type="button" style={{ margin: 10 }} onClick={handleSubmit}>
+      <Button variant="primary" type="button" className="m-2" onClick={handleSubmit}>
         Submit
       </Button>
-      <Button variant="primary" type="button" style={{ margin: 10 }} onClick={handleClear}>
+      <Button variant="secondary" type="button" className="m-2" onClick={handleClear}>
         Clear
       </Button>
     </Form>
