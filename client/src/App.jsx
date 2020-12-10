@@ -6,13 +6,15 @@ import AppContext from './Context';
 
 const initialState = {
   awards: [],
+  message: 'Paste a reddit link to see its awards',
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'UPDATE':
       return {
-        awards: action.data,
+        awards: action.data.awards,
+        message: action.data.message,
       };
 
     default:
@@ -24,6 +26,7 @@ function App() {
 
   return (
     <Container className="App">
+      <h1 className="text-center" style={{ marginTop: 50, marginBottom: 50 }}>How Much Gold?</h1>
       <AppContext.Provider value={{ state, dispatch }}>
         <UrlForm />
         <AwardsTable />

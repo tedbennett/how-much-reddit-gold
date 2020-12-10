@@ -6,11 +6,12 @@ const UrlForm = () => {
   const [link, setLink] = useState('');
   const { dispatch } = useContext(AppContext);
 
-  const updateAwards = (awards) => {
-    dispatch({ type: 'UPDATE', data: awards });
+  const updateAwards = (awards, message) => {
+    dispatch({ type: 'UPDATE', data: { awards, message } });
   };
 
   const handleSubmit = async () => {
+    updateAwards([], 'Loading...');
     const body = { url: link };
     const response = await fetch('/api/awards', {
       method: 'POST',
@@ -19,18 +20,25 @@ const UrlForm = () => {
       },
       body: JSON.stringify(body),
     });
-    const newAwards = await response.json();
-    console.log(newAwards);
-    updateAwards(newAwards);
+    let newAwards = await response.json();
+    let message = '';
+    if (newAwards.name === 'Error') {
+      newAwards = [];
+      message = 'Invalid URL';
+    } else if (!newAwards.length) {
+      newAwards = [];
+      message = "Couldn't find any awards from that URL";
+    }
+    updateAwards(newAwards, message);
   };
 
   const handleClear = () => {
     setLink('');
-    updateAwards([]);
+    updateAwards([], 'Paste a reddit link to see its awards');
   };
 
   return (
-    <Form>
+    <Form className="text-center">
       <Form.Group controlId="formUrl">
         <Form.Control
           type="text"
@@ -40,10 +48,10 @@ const UrlForm = () => {
           onChange={(e) => setLink(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" type="button" onClick={handleSubmit}>
+      <Button variant="primary" type="button" style={{ margin: 10 }} onClick={handleSubmit}>
         Submit
       </Button>
-      <Button variant="primary" type="button" onClick={handleClear}>
+      <Button variant="primary" type="button" style={{ margin: 10 }} onClick={handleClear}>
         Clear
       </Button>
     </Form>

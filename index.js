@@ -3,8 +3,7 @@ const express = require('express')
 const path = require('path')
 const app = express()
 app.use(express.json())
-const port = 3000
-
+const port = process.env.PORT || 3000
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -27,7 +26,11 @@ app.post('/api/awards', (req, res) => {
       return { name: award.name,
         price: award.coin_price,
         count: award.count, 
-        image: award.resized_icons.find(img => img.width == 128).url}
+        image: award.resized_icons.find(img => img.width == 128).url,
+        image_backup: award.icon_url,
+        premium: award.days_of_premium
+      }
+        
     }))
   }).catch( error => {
     console.log(error)
