@@ -6,12 +6,12 @@ const UrlForm = () => {
   const [link, setLink] = useState('');
   const { dispatch } = useContext(AppContext);
 
-  const updateAwards = (awards, message) => {
-    dispatch({ type: 'UPDATE', data: { awards, message } });
+  const dispatchResponse = (message, data) => {
+    dispatch({ type: 'UPDATE', message, data });
   };
 
   const handleSubmit = async () => {
-    updateAwards([], 'Loading...');
+    dispatchResponse('Loading...');
     const body = { url: link };
     const response = await fetch('/api/awards', {
       method: 'POST',
@@ -20,21 +20,13 @@ const UrlForm = () => {
       },
       body: JSON.stringify(body),
     });
-    let newAwards = await response.json();
-    let message = '';
-    if (newAwards.name === 'Error') {
-      newAwards = [];
-      message = 'Invalid URL';
-    } else if (!newAwards.length) {
-      newAwards = [];
-      message = "Couldn't find any awards from that URL";
-    }
-    updateAwards(newAwards, message);
+    const json = await response.json();
+    dispatchResponse(json.message, json.data);
   };
 
   const handleClear = () => {
     setLink('');
-    updateAwards([], 'Paste a reddit link to see its awards');
+    dispatchResponse('Paste a reddit link to see its awards');
   };
 
   return (
